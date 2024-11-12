@@ -7,7 +7,7 @@ const userSchema = new Schema({
         type: String,
         unique: true,
         required: true,
-        trimmed: true
+        trim: true  // This will trim whitespace from both ends of the string
     },
     email: {
         type: String,
@@ -18,15 +18,19 @@ const userSchema = new Schema({
             message: 'Email validation failed'
           }
     },
-    thoughts: {
+    thoughts: [{
         type: Schema.Types.ObjectId,
         ref: 'Thought'
-    },
-    friends: {
+    }],
+    friends: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
-    // Set of virtual 'friendCount' = length of the user's friends array
+    }]
+});
+
+// Set of virtual 'friendCount' = length of the user's friends array
+userSchema.virtual('friendCount').get(function() {
+    return this.friends.length;
 });
 
 const User = model('User', userSchema);

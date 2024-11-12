@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
-const { Schema, model } = mongoose;
+const { Schema, model, Types } = mongoose;
 
 const reactionSchema = new Schema({
     reactionId: {
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        default: new Types.ObjectId()
     },
     reactionBody: {
         type: String,
@@ -12,8 +13,8 @@ const reactionSchema = new Schema({
         maxlength: [280, 'Your reaction cannot be longer than 280 characters']
     },
     username: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        type: String,
+        required: true
     },
     createdAt: {
         type: Date,
@@ -35,12 +36,15 @@ const thoughtSchema = new Schema({
         get: (createdAt: Date) => createdAt.toISOString().split('T')[0]
     },
     username: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: 'User'
+        type: String,
+        required: true
     },
     reactions: [reactionSchema],
-    // Set of virtual 'reactionCount' = length of the user's reactions array
+});
+
+// Set of virtual 'reactionCount' = length of the user's reactions array
+thoughtSchema.virtual('reactionCount').get(function() {
+    return this.reactions.length;
 });
 
 const Thought = model('Thought', thoughtSchema);
