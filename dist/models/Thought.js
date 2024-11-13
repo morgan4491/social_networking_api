@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-
 const { Schema, model, Types } = mongoose;
-
 const reactionSchema = new Schema({
     reactionId: {
         type: Schema.Types.ObjectId,
@@ -19,10 +17,9 @@ const reactionSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        get: (createdAt: Date) => createdAt.toISOString().split('T')[0]
+        get: (createdAt) => createdAt.toISOString().split('T')[0]
     }
 });
-
 const thoughtSchema = new Schema({
     thoughtText: {
         type: String,
@@ -34,7 +31,7 @@ const thoughtSchema = new Schema({
         type: Date,
         default: Date.now,
         // The getter method helps with formatting the stored timestamp
-        get: (createdAt: Date) => createdAt.toISOString().split('T')[0]
+        get: (createdAt) => createdAt.toISOString().split('T')[0]
     },
     username: {
         type: String,
@@ -42,12 +39,9 @@ const thoughtSchema = new Schema({
     },
     reactions: [reactionSchema],
 });
-
 // Set of virtual 'reactionCount' = length of the user's reactions array
-thoughtSchema.virtual('reactionCount').get(function() {
+thoughtSchema.virtual('reactionCount').get(function () {
     return this.reactions.length;
 });
-
 const Thought = model('Thought', thoughtSchema);
-
 export default Thought;
