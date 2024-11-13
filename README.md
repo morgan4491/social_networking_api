@@ -17,11 +17,11 @@
 
 
 ## Instructions:
-- FINISH INSTRUCTIONS
+- Visit my GitHub repo and clone the repository. Be sure to 'npm run install'. Then, enter 'npm run build'. To start the application locally, enter 'npm run start'. You can utilize Insomnia and MongoDB Compass to confirm functionality.
 
 
 ## Walkthrough:
-[Walkthrough Video Link]()
+[Walkthrough Video Link](https://drive.google.com/file/d/1VwPnaCBgwL93Xo8i_PodOm6J-fEPOl3M/view?usp=sharing)
 
 
 ## Questions:

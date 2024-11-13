@@ -35,8 +35,11 @@ export async function updateUserById(req, res) {
     const user_id = req.params.userId;
     try {
         const user = await User.findByIdAndUpdate(user_id, {
-            $set: req.body
-        });
+            $set: {
+                username: req.body.username,
+                email: req.body.email
+            }
+        }, { new: true });
         res.json(user);
     }
     catch (error) {
@@ -109,7 +112,10 @@ export async function updateThoughtById(req, res) {
     console.log(thought_id);
     try {
         const thought = await Thought.findByIdAndUpdate(thought_id, {
-            $set: req.body.thoughtText
+            $set: {
+                thoughtText: req.body.thoughtText,
+                username: req.body.username
+            }
         }, { new: true });
         res.json(thought);
     }
