@@ -2,13 +2,18 @@ import User from '../models/User.js';
 import Thought from '../models/Thought.js';
 // GET all users
 export async function findAllUsers(_, res) {
-    const users = await User.find();
-    res.json(users);
+    // The lean() method is a performance improvement
+    const users = await User.find().lean();
+    const usersWithFriendCount = users.map(user => ({
+        ...user,
+        friendCount: user.friends.length
+    }));
+    res.json(usersWithFriendCount);
 }
 // GET a single user by its '_id' and populate thoughts and friend data
 export async function getSingleUserData(req, res) {
     const user_id = req.params.userId;
-    const user = await User.findById(user_id).populate('thoughts').populate('friends');
+    const user = await User.findById(user_id).populate({ path: 'thoughts' }).populate({ path: 'friends' });
     res.json(user);
 }
 export async function createUser(req, res) {
@@ -89,8 +94,12 @@ export async function deleteFriendFromUser(req, res) {
     res.json(user);
 }
 export async function getAllThoughts(_, res) {
-    const thoughts = await Thought.find();
-    res.json(thoughts);
+    const thoughts = await Thought.find().lean();
+    const thoughtsWithReactionCount = thoughts.map(thought => ({
+        ...thought,
+        reactionCount: thought.reactions.length
+    }));
+    res.json(thoughtsWithReactionCount);
 }
 export async function getSingleThoughtById(req, res) {
     const thought_id = req.params.thoughtId;
